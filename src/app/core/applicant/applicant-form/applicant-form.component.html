@@ -1,0 +1,223 @@
+<!-- Form of application  -->
+<form [formGroup]="applicantFormstructure"
+	class="px-5 py-3">
+	<div class="row mb-2">
+		<div class="col-6">
+			<label for="applicationNumber"
+				class="form-label">
+				Application Number
+			</label>
+			<input [ngClass]="applicantFormstructure.get('applicationNumber')?.touched && 
+			applicantFormstructure.get('applicationNumber')?.invalid ? 'border-danger' : ''"
+				type="text"
+				class="form-control"
+				formControlName="applicationNumber"
+				id="applicationNumber">
+		</div>
+		<div class="col-6">
+			<label for="applicationType"
+				class="form-label">
+				Application Type
+			</label>
+			<select class="form-select"
+				formControlName="applicationType"
+				aria-label="Default select example">
+				<option value
+					selected
+					disabled>
+					Select option
+				</option>
+				<option value="Home Loan">Home Loan</option>
+				<option value="Personal Loan">Personal Loan</option>
+				<option value="Business Loan">Business Loan</option>
+			</select>
+		</div>
+	</div>
+	<div class="row mb-2">
+		<div class="col-6">
+			<label for="amount"
+				class="form-label">
+				Amount
+			</label>
+			<input type="number"
+				formControlName="amount"
+				class="form-control"
+				id="amount">
+		</div>
+		<div class="col-6">
+			<label for="status"
+				class="form-label">
+				Status
+			</label>
+			<div class="d-flex  gap-4">
+				<div class="form-check">
+					<input class="form-check-input"
+						type="radio"
+						name="status"
+						formControlName="status"
+						value="Active"
+						id="Active">
+					<label class="form-check-label"
+						for="Active">
+						Active
+					</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input"
+						type="radio"
+						name="status"
+						formControlName="status"
+						value="Inactive"
+						id="Inactive"
+						checked>
+					<label class="form-check-label"
+						for="Inactive">
+						Inactive
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	 
+	<div formArrayName="applicants">
+		<button *ngIf="getPage() !== 'view'"
+			(click)="addApplicant()"
+			type="button"
+			class="btn btn-sm btn-info d-flex align-items-center gap-2">
+			<H5>Applicant Add</H5>
+			<img src="../assets/svg/add-circle-black.svg"
+				alt="add"
+				height="20"
+				width="20">
+		</button>
+		<!-- Applicant -->
+		<div *ngIf="applicantFormstructure?.get('applicants')?.touched &&
+			applicantFormstructure?.get('applicants')?.invalid"
+			class="text-danger">
+			Minimum one Applicant is Required
+		</div>
+		<div class="row mt-2">
+			<div class="col-4">
+				<ul class="list-group">
+					<li *ngFor="let applicantsForm of applicants.controls; let idx=index"
+						[ngClass]="selectedApplicant === idx ? 'active':''"
+						(click)="setSelectedApplicant(idx)"
+						class="list-group-item"
+						aria-current="true">
+						<div class="d-flex justify-content-between align-items-center gap-2">
+							<span>
+								Applicant {{ idx+1 }}
+							</span>
+							<button [disabled]="getPage() == 'view'" 
+							(click)="removeApplicant(idx)"
+								class="btn btn-sm border-0 d-flex align-items-center">
+								<img src="../assets/svg/delete-remove.svg"
+									alt="add"
+									height="20"
+									width="20">
+							</button>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="col-8">
+				<ng-container *ngFor="let applicantsForm of applicants.controls; let idx=index">
+					<div *ngIf="selectedApplicant === idx"
+						[formGroupName]="idx"
+						class="form-row">
+						<div class>
+							<label for="fullName{{idx}}"
+								class="form-label">
+								Full Name
+							</label>
+							<input type="text"
+								formControlName="fullName"
+								class="form-control"
+								id="fullName{{idx}}">
+						</div>
+						<div class>
+							<label for="applicantIdType{{idx}}"
+								class="form-label">
+								Applicant ID Type
+							</label>
+							<applicant-id-type [isDisabled]="getPage() == 'view'"
+								[options]="applicantIDTypeOptions"
+								[selected]="applicantsForm?.get('applicantIdType')?.value || []"
+								(selectedItemEmit)="selectedApplicantsIds($event, idx)"></applicant-id-type>
+						</div>
+						<div class>
+							<label for="gender{{idx}}"
+								class="form-label">
+								Gender
+							</label>
+							<div class="d-flex  gap-4">
+								<div class="form-check">
+									<input class="form-check-input"
+										type="radio"
+										name="gender"
+										formControlName="gender"
+										value="Male"
+										id="Male">
+									<label class="form-check-label"
+										for="Male">
+										Male
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input"
+										type="radio"
+										name="gender"
+										formControlName="gender"
+										value="Female"
+										id="Female"
+										checked>
+									<label class="form-check-label"
+										for="Female">
+										Female
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input"
+										type="radio"
+										name="gender"
+										formControlName="gender"
+										value="Not Disclosed"
+										id="notDisclosed"
+										checked>
+									<label class="form-check-label"
+										for="notDisclosed">
+										Not Disclosed
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</ng-container>
+			</div>
+		</div>
+	</div>
+
+	<div class="d-flex justify-content-end gap-2 mt-3">
+		<button [routerLink]="['/applicant']"
+			type="button"
+			class="btn btn-outline-danger d-flex align-items-center gap-2">
+			<img src="../assets/svg/back.svg"
+				alt="add"
+				height="20"
+				width="20">
+			<span>Back to List</span>
+		</button>
+		<button *ngIf="getPage() =='create'"
+			(click)="onFormReset()"
+			type="button"
+			class="btn btn-warning">
+			Reset
+		</button>
+		<button *ngIf="getPage() !=='view'"
+			(click)="onFormSubmit()"
+			type="button"
+			class="btn btn-success">
+			{{getPage() =='edit' ?'Update' : 'Submit'}}
+		</button>
+	</div>
+</form>

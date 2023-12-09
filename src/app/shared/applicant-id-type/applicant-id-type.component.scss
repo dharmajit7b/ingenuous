@@ -1,0 +1,12 @@
+.list-group-item{
+    cursor: pointer;
+    &:hover , &.active{
+        border: none;
+        color: black;
+        background-color: #cbe9f6;
+    }
+
+    &.not-allow{
+        cursor:not-allowed;
+    }
+}
