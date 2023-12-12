@@ -78,7 +78,7 @@
 			</div>
 		</div>
 	</div>
-	 
+	 <!-- Add Applicant Button -->
 	<div formArrayName="applicants">
 		<button *ngIf="getPage() !== 'view'"
 			(click)="addApplicant()"
@@ -90,11 +90,11 @@
 				height="20"
 				width="20">
 		</button>
-		<!-- Applicant -->
+		<!-- check Applicant  added or not -->
 		<div *ngIf="applicantFormstructure?.get('applicants')?.touched &&
 			applicantFormstructure?.get('applicants')?.invalid"
 			class="text-danger">
-			Minimum one Applicant is Required
+			Require add Applicant Detail
 		</div>
 		<div class="row mt-2">
 			<div class="col-4">
@@ -120,6 +120,7 @@
 					</li>
 				</ul>
 			</div>
+			<!-- Applicant Form -->
 			<div class="col-8">
 				<ng-container *ngFor="let applicantsForm of applicants.controls; let idx=index">
 					<div *ngIf="selectedApplicant === idx"

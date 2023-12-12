@@ -81,19 +81,19 @@ export class ApplicantFormComponent implements OnInit {
       }
     }
   }
-
+  //form array
   public get applicants(): FormArray {
     return this.applicantFormstructure?.get('applicants') as FormArray;
   }
 
   public addApplicant() {
     const applicantForm: FormGroup = this.fb.group({
-      fullName: [''],
+      fullName: ['', [Validators.required]],
       applicantIdType: [],
       gender: [''],
     });
 
-    this.applicants?.push(applicantForm);
+    this.applicants?.push(applicantForm); // push in formArray
   }
 
   public removeApplicant(index: number) {

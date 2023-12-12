@@ -7,6 +7,7 @@
 									width="20"> Add Application
     </button>
   </div>
+  <!-- Add Table  -->
   <table class="my-4 table table-striped border border-secondary-subtle">
     <thead>
       <tr>
@@ -18,6 +19,7 @@
         <th class="text-end">Action</th>
       </tr>
     </thead>
+    <!-- Application List array. -->
     <tbody>
       @for (item of applicantList; track item.name) {
       <tr>
@@ -34,6 +36,7 @@
             >{{ item.status }}</span
           >
         </td>
+        
         <td class="d-flex justify-content-end gap-2">
           <button
             class="btn btn-sm"
